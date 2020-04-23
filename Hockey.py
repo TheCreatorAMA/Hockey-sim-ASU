@@ -1,7 +1,5 @@
 import numpy as np
 
-print("ur a dummy tiff")
-
 #Hockey player class
 class Player():
 	def __inti__(self,age):
