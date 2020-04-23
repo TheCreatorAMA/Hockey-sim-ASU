@@ -29,7 +29,23 @@ class Player():
 
 #main function to run all sub functions
 def main():
-	p1 = Player('Alex Akiu', 23, 'Arizona', 'RW', 101, 0.43, 0.50)
-	print(p1)
+	intro()
+	N = input('How many games would you like to simulate: ')
+
+def intro():
+	print(100*'=')
+	a = 'Welcome to the Hockey Simulator! This Simulator uses the current seasons stats to determine the outcome of a game'
+	print(a)
+	print(100*'=')
+
+def simNGames(N):
+	pass
+
+def simOneGame():
+	pass
 
 if __name__ == '__main__': main()
+
+#Testing player object
+p1 = Player('Alex Akiu', 23, 'Arizona', 'RW', 101, 0.43, 0.50)
+print(p1)
