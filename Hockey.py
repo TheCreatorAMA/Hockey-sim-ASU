@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+stats = pd.read_csv('Imported_data.csv')
+stats[:1]
 
 #Hockey player class
 class Player():
