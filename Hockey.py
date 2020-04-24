@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-stats = pd.read_csv('Imported_data.csv')
-stats[:1]
 
 #Hockey player class
 class Player():
@@ -58,3 +56,6 @@ if __name__ == '__main__': main()
 #Testing player object
 p1 = Player('Alex Akiu', 23, 'Arizona', 'RW', 101, 0.43, 0.50)
 print(p1)
+
+stats = pd.read_csv('Imported_data.csv')
+stats[:1]
