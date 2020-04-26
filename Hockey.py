@@ -4,14 +4,14 @@ import pandas as pd
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
-	def __init__(self, name, age, team, pos, GP, CFPer, THRUPer):
+	def __init__(self, name, age, team, pos, GP, CFPer, FOWPer):
 		self.name = name
 		self.age = age
 		self.team = team
 		self.pos = pos
 		self.GP = GP
 		self.CFPer = CFPer
-		self.THRUPer = THRUPer
+		self.FOWPer = FOWPer
 
 	def getName(self):
 		return self.name
@@ -24,6 +24,9 @@ class Player():
 
 	def getPosition(self):
 		return self.pos
+
+	def getFOWPer(self):
+		return self.FOWPer
 
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
@@ -44,20 +47,31 @@ def intro():
 def teams():
 	#function to initialize teams
 	#probably a good place to do the data import and seperate the players into teams
-	team_1 = []
-	team_2 = []
-	pass
+	
+	#Test Players
+	p1 = Player('Player 1', 23, 'Arizona', 'C', 101, 0.43, 0.52)
+	p2 = Player('Player 2', 23, 'Arizona', 'RW', 101, 0.43, 0.49)
+	p3 = Player('Player 3', 23, 'Arizona', 'LW', 101, 0.43, 0.34)
+	p4 = Player('Player 4', 23, 'Utah', 'C', 101, 0.43, 0.503)
+	p5 = Player('Player 5', 23, 'Utah', 'RW', 101, 0.43, 0.42)
+	p6 = Player('Player 7', 23, 'Utah', 'LW', 101, 0.43, 0.45)
+
+	team_1 = [p1,p2,p3]
+	team_2 = [p4,p5,p6]
+	
+	return team_1, team_2
 
 def getInputs():
 	N = int(input('How many games would you like to simulate: '))
 	return N
 
 def simNGames(N):
+	team_1, team_2 = teams()
 	wins_team_1 = 0
 	wins_team_2 = 0
 
 	for i in range(N):
-		score_1, score_2, win_1, win_2 = simOneGame()
+		score_1, score_2, win_1, win_2 = simOneGame(team_1,team_2)
 
 		print('score team 1: ', score_1)
 		print('score team 2: ', score_2)
@@ -69,11 +83,11 @@ def simNGames(N):
 
 	return wins_team_1, wins_team_2
 
-def simOneGame():
+def simOneGame(team_1, team_2):
 	minutes = 0
 	win_1 = False
 	win_2 = False
-	score_team_1 = 1
+	score_team_1 = 0
 	score_team_2 = 0
 
 	#main game clock
@@ -83,7 +97,7 @@ def simOneGame():
 
 	#check if scores are equal and if they are go into overtime
 	if score_team_1 == score_team_2:
-		print('overtime')
+		overTime()
 	elif score_team_1 > score_team_2:
 		win_1 = True
 	elif score_team_2 > score_team_1:
@@ -100,12 +114,12 @@ def faceOff():
 	#use face off win% of each player
 	pass
 
+def overTime():
+	pass
+
 if __name__ == '__main__': main()
 
 #Any test code put down here
-#Testing player object
-p1 = Player('Alex Akiu', 23, 'Arizona', 'C', 101, 0.43, 0.50)
-print(p1)
 
 # stats = pd.read_csv('Imported_data.csv')
 # stats[:1]cl
