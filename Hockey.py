@@ -32,6 +32,7 @@ class Player():
 def main():
 	intro()
 	N = getInputs()
+	simNGames(N)
 
 def intro():
 	print(100*'=')
@@ -40,13 +41,31 @@ def intro():
 	print(100*'=')
 
 def getInputs():
-	N = input('How many games would you like to simulate: ')
+	N = int(input('How many games would you like to simulate: '))
 	return N
 
 def simNGames(N):
-	pass
+	for i in range(N):
+		simOneGame()
 
 def simOneGame():
+	#main game clock
+	for i in range(60):
+		pass
+
+	#check if scores are equal if not go into overtime
+
+
+def teams():
+	#function to initialize teams
+	#probably a good place to do the data import and seperate the players into teams
+	team_1 = []
+	team_2 = []
+	pass
+
+def faceOff():
+	#select a center from each team and have them faceoff
+	#use face off win% of each player
 	pass
 
 if __name__ == '__main__': main()
@@ -57,5 +76,5 @@ if __name__ == '__main__': main()
 p1 = Player('Alex Akiu', 23, 'Arizona', 'RW', 101, 0.43, 0.50)
 print(p1)
 
-stats = pd.read_csv('Imported_data.csv')
-stats[:1]cl
+# stats = pd.read_csv('Imported_data.csv')
+# stats[:1]cl
