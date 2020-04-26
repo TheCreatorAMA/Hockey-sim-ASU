@@ -32,29 +32,14 @@ class Player():
 def main():
 	intro()
 	N = getInputs()
-	simNGames(N)
+	wins_1, wins_2 = simNGames(N)
+	gameSummary(wins_1,wins_2)
 
 def intro():
 	print(100*'=')
-	a = 'Welcome to the Hockey Simulator! This Simulator uses the current seasons stats to determine the outcome of a game'
+	a = 'Welcome to the Hockey Simulator! This Simulator uses the current seasons stats to determine the outcome of a game. Teams are preset based on data imported into excel sheet.'
 	print(a)
 	print(100*'=')
-
-def getInputs():
-	N = int(input('How many games would you like to simulate: '))
-	return N
-
-def simNGames(N):
-	for i in range(N):
-		simOneGame()
-
-def simOneGame():
-	#main game clock
-	for i in range(60):
-		pass
-
-	#check if scores are equal if not go into overtime
-
 
 def teams():
 	#function to initialize teams
@@ -63,6 +48,53 @@ def teams():
 	team_2 = []
 	pass
 
+def getInputs():
+	N = int(input('How many games would you like to simulate: '))
+	return N
+
+def simNGames(N):
+	wins_team_1 = 0
+	wins_team_2 = 0
+
+	for i in range(N):
+		score_1, score_2, win_1, win_2 = simOneGame()
+
+		print('score team 1: ', score_1)
+		print('score team 2: ', score_2)
+
+		if win_1:
+			wins_team_1 += 1
+		elif win_2:
+			wins_team_2 += 1
+
+	return wins_team_1, wins_team_2
+
+def simOneGame():
+	minutes = 0
+	win_1 = False
+	win_2 = False
+	score_team_1 = 1
+	score_team_2 = 0
+
+	#main game clock
+	while minutes < 60:
+
+		minutes += 1
+
+	#check if scores are equal and if they are go into overtime
+	if score_team_1 == score_team_2:
+		print('overtime')
+	elif score_team_1 > score_team_2:
+		win_1 = True
+	elif score_team_2 > score_team_1:
+		win_2 = True
+
+	return  score_team_1, score_team_2, win_1, win_2
+
+def gameSummary(stat1, stat2):
+	print('Team 1 won {0} games'.format(stat1))
+	print('Team 2 won {0} games'.format(stat2))
+
 def faceOff():
 	#select a center from each team and have them faceoff
 	#use face off win% of each player
@@ -70,10 +102,9 @@ def faceOff():
 
 if __name__ == '__main__': main()
 
-
 #Any test code put down here
 #Testing player object
-p1 = Player('Alex Akiu', 23, 'Arizona', 'RW', 101, 0.43, 0.50)
+p1 = Player('Alex Akiu', 23, 'Arizona', 'C', 101, 0.43, 0.50)
 print(p1)
 
 # stats = pd.read_csv('Imported_data.csv')
