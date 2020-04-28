@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import random
 
 #Hockey player class
 class Player():
@@ -13,9 +14,9 @@ class Player():
 		self.CF = CF
 		self.Minor = Minor
 		self.Major = Major
-        self.PIMG = PIMG
+		self.PIMG = PIMG
 		self.GP = GP
-        self.PPTOI = PPTOI
+		self.PPTOI = PPTOI
 
 	def getName(self):
 		return self.name
@@ -31,6 +32,12 @@ class Player():
 
 	def getFOWPer(self):
 		return self.FOWPer
+
+	def getFO(self):
+		return self.FO
+
+	def setFO(self,new_FO):
+		self.FO = new_FO
 
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
@@ -53,12 +60,12 @@ def intro():
 def teams():
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
 	#Test Players
-	p1 = Player('Player 1', 23, 'Arizona', 'C', 101, 0.43, 0.52)
-	p2 = Player('Player 2', 23, 'Arizona', 'RW', 101, 0.43, 0.49)
-	p3 = Player('Player 3', 23, 'Arizona', 'LW', 101, 0.43, 0.34)
-	p4 = Player('Player 4', 23, 'Utah', 'C', 101, 0.43, 0.503)
-	p5 = Player('Player 5', 23, 'Utah', 'RW', 101, 0.43, 0.42)
-	p6 = Player('Player 7', 23, 'Utah', 'LW', 101, 0.43, 0.45)
+	p1 = Player('Player 1', 'Arizona', 'C', 0.54, 1,1,1,1,1,1,1)
+	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 1,1,1,1,1,1,1)
+	p3 = Player('Player 3', 'Arizona', 'LW', 0.44, 1,1,1,1,1,1,1)
+	p4 = Player('Player 4', 'Utah', 'C', 0.49, 1,1,1,1,1,1,1)
+	p5 = Player('Player 5', 'Utah', 'RW', 0.40, 1,1,1,1,1,1,1)
+	p6 = Player('Player 7', 'Utah', 'LW', 0.41, 1,1,1,1,1,1,1)
 
 	team_1 = [p1,p2,p3]
 	team_2 = [p4,p5,p6]
@@ -68,7 +75,6 @@ def teams():
 def getInputs():
 	"""Only used for getting number of games if user wants to simulate more"""
 	N = int(input('How many games would you like to simulate: '))
-	track events
 	return N
 
 def simNGames(N):
@@ -80,9 +86,6 @@ def simNGames(N):
 	for i in range(N):
 		score_1, score_2, win_1, win_2 = simOneGame(team_1,team_2)
 
-		print('score team 1: ', score_1)
-		print('score team 2: ', score_2)
-
 		if win_1:
 			wins_team_1 += 1
 		elif win_2:
@@ -93,14 +96,19 @@ def simNGames(N):
 def simOneGame(team_1, team_2):
 	"""Main function that game is run under, all game logic is here."""
 	minutes = 0
-	win_1 = False
-	win_2 = False
-	score_team_1 = 0
-	score_team_2 = 0
+	win_1 = win_2 = False
+	score_team_1 = score_team_2 = 0
 	Track_changes = False
 
-	#main game clock
+	starting_team = faceOff(team_1,team_2)
+
 	while minutes < 60:
+
+		if starting_team == team_1[0].getTeam():
+			SL = offensiveLineup(team_1)
+
+		elif starting_team == team_2[0].getTeam():
+			SL = offensiveLineup(team_2)
 
 		minutes += 1
 
@@ -119,12 +127,29 @@ def gameSummary(stat1, stat2):
 	print('Team 1 won {0} games'.format(stat1))
 	print('Team 2 won {0} games'.format(stat2))
 
-def faceOff():
-	#select a center from each team and have them faceoff
-	#use face off win% of each player
-	pass
+def faceOff(team_1, team_2):
+	"""Faceoff condtion"""
+	controlling_team = ''
+	t1c = random.choice([i for i in team_1 if i.getPosition() == 'C'])
+	t2c = random.choice([i for i in team_2 if i.getPosition() == 'C'])
+	
+	if random.random() < t1c.getFO():
+		controlling_team = t1c.getTeam()
+	else:
+		controlling_team = t2c.getTeam()
+
+	return controlling_team
+
+def offensiveLineup(team):
+	"""randomly creates offensive lineup"""
+	lineup = []
+	lineup.append(random.choice([i for i in team if i.getPosition() == 'LW']))
+	lineup.append(random.choice([i for i in team if i.getPosition() == 'C']))
+	lineup.append(random.choice([i for i in team if i.getPosition() == 'RW']))
+	return lineup
 
 def overTime():
+	"""If both teams have same score then game goes into overtime"""
 	pass
 
 if __name__ == '__main__': main()
