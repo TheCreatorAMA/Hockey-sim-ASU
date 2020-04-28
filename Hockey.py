@@ -68,6 +68,7 @@ def teams():
 def getInputs():
 	"""Only used for getting number of games if user wants to simulate more"""
 	N = int(input('How many games would you like to simulate: '))
+	track events
 	return N
 
 def simNGames(N):
@@ -96,6 +97,7 @@ def simOneGame(team_1, team_2):
 	win_2 = False
 	score_team_1 = 0
 	score_team_2 = 0
+	Track_changes = False
 
 	#main game clock
 	while minutes < 60:
