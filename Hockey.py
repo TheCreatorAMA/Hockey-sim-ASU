@@ -4,14 +4,18 @@ import pandas as pd
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
-	def __init__(self, name, age, team, pos, GP, CFPer, FOWPer):
+	def __init__(self, name, team, pos, FO, Thru, CF, Minor, Major, PIMG, GP, PPTOI):
 		self.name = name
-		self.age = age
 		self.team = team
 		self.pos = pos
+		self.FO = FO
+		self.Thru = Thru
+		self.CF = CF
+		self.Minor = Minor
+		self.Major = Major
+        self.PIMG = PIMG
 		self.GP = GP
-		self.CFPer = CFPer
-		self.FOWPer = FOWPer
+        self.PPTOI = PPTOI
 
 	def getName(self):
 		return self.name
