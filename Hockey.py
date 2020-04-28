@@ -37,21 +37,21 @@ class Player():
 
 #main function to run all sub functions
 def main():
+	"""Where all functions will run to simulate the game"""
 	intro()
 	N = getInputs()
 	wins_1, wins_2 = simNGames(N)
 	gameSummary(wins_1,wins_2)
 
 def intro():
+	"""Prints a nice introduction header"""
 	print(100*'=')
 	a = 'Welcome to the Hockey Simulator! This Simulator uses the current seasons stats to determine the outcome of a game. Teams are preset based on data imported into excel sheet.'
 	print(a)
 	print(100*'=')
 
 def teams():
-	#function to initialize teams
-	#probably a good place to do the data import and seperate the players into teams
-	
+	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
 	#Test Players
 	p1 = Player('Player 1', 23, 'Arizona', 'C', 101, 0.43, 0.52)
 	p2 = Player('Player 2', 23, 'Arizona', 'RW', 101, 0.43, 0.49)
@@ -66,10 +66,12 @@ def teams():
 	return team_1, team_2
 
 def getInputs():
+	"""Only used for getting number of games if user wants to simulate more"""
 	N = int(input('How many games would you like to simulate: '))
 	return N
 
 def simNGames(N):
+	"""Simulates number of inputted games and keeps track of stats of each game"""
 	team_1, team_2 = teams()
 	wins_team_1 = 0
 	wins_team_2 = 0
@@ -88,6 +90,7 @@ def simNGames(N):
 	return wins_team_1, wins_team_2
 
 def simOneGame(team_1, team_2):
+	"""Main function that game is run under, all game logic is here."""
 	minutes = 0
 	win_1 = False
 	win_2 = False
@@ -110,6 +113,7 @@ def simOneGame(team_1, team_2):
 	return  score_team_1, score_team_2, win_1, win_2
 
 def gameSummary(stat1, stat2):
+	"""Output results"""
 	print('Team 1 won {0} games'.format(stat1))
 	print('Team 2 won {0} games'.format(stat2))
 
