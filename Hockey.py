@@ -68,29 +68,24 @@ def intro():
 	print(100*'=')
 
 def teams():
-    #Actual Players
-    PlayerList = []
-    for i in range(len(stats)):
-        PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
-                                 stats.iloc[i]['FO'], stats.iloc[i]['Thru'], stats.iloc[i]['CF'], 
-                                 stats.iloc[i]['Penalties'], stats.iloc[i]['Minor'], stats.iloc[i]['GP'], 
-                                 stats.iloc[i]['PPG']))
-
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
-	team1 = stats[1:35]
-	team2 = stats[35:]
-    
-	#Test Players
-	p1 = Player('Player 1','Arizona','C', 1,0.72,1,1,1,1,1)
-	p2 = Player('Player 2', 'Arizona', 'RW', 1, 0.62,1,1,1,1,1)
-	p3 = Player('Player 3', 'Arizona', 'LW', 1, 0.49,1,1,1,1,1)
-	p4 = Player('Player 4', 'Utah', 'C', 0, 0, 0,1,0.4,1,1)
-	p5 = Player('Player 5', 'Utah', 'RW', 0, 0, 0,1,0.4,1,1)
-	p6 = Player('Player 7', 'Utah', 'LW', 0, 0, 0,0.23,1,1,1)
-
-	team_1 = [p1,p2,p3]
-	team_2 = [p4,p5,p6]
+	#Actual Players
+	PlayerList = []
+	for i in range(len(stats)):
+		PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
+								stats.iloc[i]['FO'], stats.iloc[i]['Thru'], stats.iloc[i]['CF'], 
+								stats.iloc[i]['Penalties'], stats.iloc[i]['Minor'], stats.iloc[i]['GP'], 
+								stats.iloc[i]['PPG']))
 	
+	team_1 = []
+	team_2 = []
+
+	for i in PlayerList:
+		if i.getTeam() == PlayerList[0].getTeam():
+			team_1.append(i)
+		else:
+			team_2.append(i)
+			
 	return team_1, team_2
 
 def getInputs():
@@ -151,7 +146,7 @@ def simOneGame(team_1, team_2):
 					break
 				elif i.getTeam() == team_2[0].getTeam():
 					controlling_team = team_1[0].getTeam()
-					print('else part team switched to', controlling_team)
+					print('else part team switched to', controlling_team) #issues here****
 					break
 		minutes += 1
 
