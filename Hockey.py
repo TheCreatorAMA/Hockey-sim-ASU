@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import random
 
+stats = pd.read_csv('All_data.csv')
+stats.set_index("Player", inplace=True)
+
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
@@ -80,7 +83,6 @@ def intro():
 	print(100*'=')
 
 def teams():
-    stats = pd.read_csv('All_data.csv')
     #Actual Players
     team1 = stats[1:35]
     team2 = stats[35:]
