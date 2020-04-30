@@ -5,43 +5,52 @@ import random
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
-	def __init__(self, name, team, pos, FO, Thru, CF, Minor, Major, PIMG, GP, PPTOI):
-		self.name = name
-		self.team = team
-		self.pos = pos
+	def __init__(self, Player, Team, Pos, FO, Thru, CF, Penalties, Minor, GP, PPG):
+		self.Player = Player
+		self.Team = Team
+		self.Pos = Pos
 		self.FO = FO
 		self.Thru = Thru
 		self.CF = CF
+        self.Penalties = Penalties
 		self.Minor = Minor
-		self.Major = Major
-		self.PIMG = PIMG
 		self.GP = GP
-		self.PPTOI = PPTOI
+        self.PPG = PPG
 
-	def getName(self):
-		return self.name
 
-	def getAge(self):
-		return self.age
+	def getPlayer(self):
+		return self.Player
 
 	def getTeam(self):
-		return self.team
+		return self.Team
 
 	def getPosition(self):
-		return self.pos
-
-	def getFOWPer(self):
-		return self.FOWPer
+		return self.Pos
 
 	def getFO(self):
 		return self.FO
+    
+	def getThru(self):
+		return self.Thru
+    
+	def getCF(self):
+		return self.CF
 
-	def setFO(self,new_FO):
-		self.FO = new_FO
+	def getPenalties(self):
+		return self.Penalties
+    
+	def getMinor(self):
+		return self.Minor
+    
+	def getGP(self):
+		return self.GP
+    
+	def getPPG(self):
+		return self.PPG
 
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
-
+    
 #main function to run all sub functions
 def main():
 	"""Where all functions will run to simulate the game"""
