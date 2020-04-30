@@ -67,6 +67,10 @@ def intro():
 	print(100*'=')
 
 def teams():
+    stats = pd.read_csv('All_data.csv')
+    #Actual Players
+    team1 = stats[1:35]
+    team2 = stats[35:]
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
 	#Test Players
 	p1 = Player('Player 1', 'Arizona', 'C', 0.54, 1,1,1,1,1,1,1)
