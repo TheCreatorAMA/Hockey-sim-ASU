@@ -25,7 +25,6 @@ class Player():
 		return self.Team
 
 	def getPosition(self):
-<<<<<<< HEAD
 		return self.pos
 
 	def getFO(self):
@@ -39,7 +38,6 @@ class Player():
 
 	def setFO(self,new_FO):
 		self.FO = new_FO
-=======
 		return self.Pos
 
 	def getFO(self):
@@ -62,7 +60,6 @@ class Player():
     
 	def getPPG(self):
 		return self.PPG
->>>>>>> 915ed6a5b435a16e37a3743bf2624c878941a3b6
 
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
@@ -126,15 +123,20 @@ def simOneGame(team_1, team_2):
 	Track_changes = False
 
 	controlling_team = faceOff(team_1,team_2)
-	lineup = control(controlling_team,team_1,team_2)
 
 	while minutes < 60:
 
+		lineup = control(controlling_team,team_1,team_2)
+
 		for i in lineup:
 			if random.random() < i.getThru():
-				pass
-			else:
-				pass
+				if i.getTeam() == team_1[0].getTeam():
+					score_team_1 += 1
+				elif i.getTeam() == team_1[0].getTeam():
+					score_team_2 += 1
+			elif random.random() < i.getCF():
+				controlling_team = controlling_team == team_1 ? team_2 : team_1;
+
 
 		minutes += 1
 
