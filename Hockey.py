@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import random
 
+stats = pd.read_csv('All_data.csv')
+
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
@@ -66,11 +68,18 @@ def intro():
 	print(100*'=')
 
 def teams():
+    #Actual Players
+    PlayerList = []
+    for i in range(len(stats)):
+        PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
+                                 stats.iloc[i]['FO'], stats.iloc[i]['Thru'], stats.iloc[i]['CF'], 
+                                 stats.iloc[i]['Penalties'], stats.iloc[i]['Minor'], stats.iloc[i]['GP'], 
+                                 stats.iloc[i]['PPG']))
+
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
-	stats = pd.read_csv('All_data.csv')
-	#Actual Players
 	team1 = stats[1:35]
 	team2 = stats[35:]
+    
 	#Test Players
 	p1 = Player('Player 1','Arizona','C', 1,0.72,1,1,1,1,1)
 	p2 = Player('Player 2', 'Arizona', 'RW', 1, 0.62,1,1,1,1,1)
