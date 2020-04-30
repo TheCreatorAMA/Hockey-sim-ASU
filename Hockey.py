@@ -8,59 +8,45 @@ stats.set_index("Player", inplace=True)
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
-	def __init__(self, Player, Team, Pos, FO, Thru, CF, Penalties, Minor, GP, PPG):
-		self.Player = Player
+	def __init__(self, Name, Team, Pos, FO, Thru, CF, Penalties, Minor, GP, PPG):
+		self.Name = Name
 		self.Team = Team
 		self.Pos = Pos
 		self.FO = FO
 		self.Thru = Thru
 		self.CF = CF
-        self.Penalties = Penalties
+		self.Penalties = Penalties
 		self.Minor = Minor
 		self.GP = GP
-        self.PPG = PPG
+		self.PPG = PPG
 
-
-	def getPlayer(self):
-		return self.Player
+	def getName(self):
+		return self.Name
 
 	def getTeam(self):
 		return self.Team
 
 	def getPosition(self):
-		return self.pos
-
-	def getFO(self):
-		return self.FO
-
-	def getThru(self):
-		return self.Thru
-
-	def getCF(self):
-		return self.CF
-
-	def setFO(self,new_FO):
-		self.FO = new_FO
 		return self.Pos
 
 	def getFO(self):
 		return self.FO
-    
+
 	def getThru(self):
 		return self.Thru
-    
+
 	def getCF(self):
 		return self.CF
 
 	def getPenalties(self):
 		return self.Penalties
-    
+
 	def getMinor(self):
 		return self.Minor
-    
+
 	def getGP(self):
 		return self.GP
-    
+
 	def getPPG(self):
 		return self.PPG
 
@@ -83,17 +69,24 @@ def intro():
 	print(100*'=')
 
 def teams():
+<<<<<<< HEAD
     #Actual Players
     team1 = stats[1:35]
     team2 = stats[35:]
+=======
+>>>>>>> 696fc137a5d3742e40630d465d041b82ae1358d9
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
+	stats = pd.read_csv('All_data.csv')
+	#Actual Players
+	team1 = stats[1:35]
+	team2 = stats[35:]
 	#Test Players
-	p1 = Player('Player 1', 'Arizona', 'C', 0.54, 0.72,0.55,1,1,1,1,1)
-	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 0.62,0.56,1,1,1,1,1)
-	p3 = Player('Player 3', 'Arizona', 'LW', 0.44, 0.49,0.49,1,1,1,1,1)
-	p4 = Player('Player 4', 'Utah', 'C', 0.49, 0.659,0.51,1,1,1,1,1)
-	p5 = Player('Player 5', 'Utah', 'RW', 0.40, 0.33,0.48,1,1,1,1,1)
-	p6 = Player('Player 7', 'Utah', 'LW', 0.41, 0.8,0.47,1,1,1,1,1)
+	p1 = Player('Player 1','Arizona','C',0.54,0.72,0.55,1,1,1,1)
+	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 0.62,0.56,1,1,1,1)
+	p3 = Player('Player 3', 'Arizona', 'LW', 0.44, 0.49,0.49,1,1,1,1)
+	p4 = Player('Player 4', 'Utah', 'C', 0.49, 0.659,0.51,1,1,1,1)
+	p5 = Player('Player 5', 'Utah', 'RW', 0.40, 0.33,0.48,1,1,1,1)
+	p6 = Player('Player 7', 'Utah', 'LW', 0.41, 0.8,0.47,1,1,1,1)
 
 	team_1 = [p1,p2,p3]
 	team_2 = [p4,p5,p6]
@@ -135,15 +128,24 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
-			if random.random() < i.getThru():
+
+			if random.random() < i.getThru(): #Seeing if player scores
+
 				if i.getTeam() == team_1[0].getTeam():
 					score_team_1 += 1
+					controlling_team = faceOff(team_1,team_2)
+					break
 				elif i.getTeam() == team_1[0].getTeam():
 					score_team_2 += 1
-			elif random.random() < i.getCF():
-				controlling_team = controlling_team == team_1 ? team_2 : team_1;
-
-
+					controlling_team = faceOff(team_1,team_2)
+					break
+	
+			elif random.random() < i.getCF(): #To see if puck get stolen
+				
+				if controlling_team == i.getTeam():
+					controlling_team == team_2[0].getTeam
+				else:
+					controlling_team == team_1[0].getTeam
 		minutes += 1
 
 	#check if scores are equal and if they are go into overtime
@@ -193,11 +195,6 @@ def offensiveLineup(team):
 
 def overTime():
 	"""If both teams have same score then game goes into overtime"""
-	pass
+	print('overtime')
 
 if __name__ == '__main__': main()
-
-#Any test code put down here
-
-# stats = pd.read_csv('Imported_data.csv')
-# stats[:1]cl
