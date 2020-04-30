@@ -3,7 +3,6 @@ import pandas as pd
 import random
 
 stats = pd.read_csv('All_data.csv')
-stats.set_index("Player", inplace=True)
 
 #Hockey player class
 class Player():
@@ -69,17 +68,18 @@ def intro():
 	print(100*'=')
 
 def teams():
-<<<<<<< HEAD
     #Actual Players
-    team1 = stats[1:35]
-    team2 = stats[35:]
-=======
->>>>>>> 696fc137a5d3742e40630d465d041b82ae1358d9
+    PlayerList = []
+    for i in range(len(stats)):
+        PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
+                                 stats.iloc[i]['FO'], stats.iloc[i]['Thru'], stats.iloc[i]['CF'], 
+                                 stats.iloc[i]['Penalties'], stats.iloc[i]['Minor'], stats.iloc[i]['GP'], 
+                                 stats.iloc[i]['PPG']))
+
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
-	stats = pd.read_csv('All_data.csv')
-	#Actual Players
 	team1 = stats[1:35]
 	team2 = stats[35:]
+    
 	#Test Players
 	p1 = Player('Player 1','Arizona','C',0.54,0.72,0.55,1,1,1,1)
 	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 0.62,0.56,1,1,1,1)
