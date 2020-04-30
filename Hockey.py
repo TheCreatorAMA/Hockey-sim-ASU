@@ -72,12 +72,12 @@ def teams():
 	team1 = stats[1:35]
 	team2 = stats[35:]
 	#Test Players
-	p1 = Player('Player 1','Arizona','C',0.54,0.72,0.55,1,1,1,1)
-	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 0.62,0.56,1,1,1,1)
-	p3 = Player('Player 3', 'Arizona', 'LW', 0.44, 0.49,0.49,1,1,1,1)
-	p4 = Player('Player 4', 'Utah', 'C', 0.49, 0.659,0.51,1,1,1,1)
-	p5 = Player('Player 5', 'Utah', 'RW', 0.40, 0.33,0.48,1,1,1,1)
-	p6 = Player('Player 7', 'Utah', 'LW', 0.41, 0.8,0.47,1,1,1,1)
+	p1 = Player('Player 1','Arizona','C', 1,0.72,1,1,1,1,1)
+	p2 = Player('Player 2', 'Arizona', 'RW', 1, 0.62,1,1,1,1,1)
+	p3 = Player('Player 3', 'Arizona', 'LW', 1, 0.49,1,1,1,1,1)
+	p4 = Player('Player 4', 'Utah', 'C', 0, 0, 0,1,0.4,1,1)
+	p5 = Player('Player 5', 'Utah', 'RW', 0, 0, 0,1,0.4,1,1)
+	p6 = Player('Player 7', 'Utah', 'LW', 0, 0, 0,0.23,1,1,1)
 
 	team_1 = [p1,p2,p3]
 	team_2 = [p4,p5,p6]
@@ -113,7 +113,7 @@ def simOneGame(team_1, team_2):
 	Track_changes = False
 
 	controlling_team = faceOff(team_1,team_2)
-
+	print('Begin new game',controlling_team)
 	while minutes < 60:
 
 		lineup = control(controlling_team,team_1,team_2)
@@ -123,20 +123,27 @@ def simOneGame(team_1, team_2):
 			if random.random() < i.getThru(): #Seeing if player scores
 
 				if i.getTeam() == team_1[0].getTeam():
+					print('Team 1 score')
 					score_team_1 += 1
 					controlling_team = faceOff(team_1,team_2)
 					break
-				elif i.getTeam() == team_1[0].getTeam():
+
+				elif i.getTeam() == team_2[0].getTeam():
+					print('Team 2 score')
 					score_team_2 += 1
 					controlling_team = faceOff(team_1,team_2)
 					break
 	
 			elif random.random() < i.getCF(): #To see if puck get stolen
 				
-				if controlling_team == i.getTeam():
-					controlling_team == team_2[0].getTeam
-				else:
-					controlling_team == team_1[0].getTeam
+				if i.getTeam() == team_1[0].getTeam():
+					controlling_team = team_2[0].getTeam()
+					print('if part Team switched to', controlling_team)
+					break
+				elif i.getTeam() == team_2[0].getTeam():
+					controlling_team = team_1[0].getTeam()
+					print('else part team switched to', controlling_team)
+					break
 		minutes += 1
 
 	#check if scores are equal and if they are go into overtime
@@ -169,6 +176,7 @@ def faceOff(team_1, team_2):
 
 def control(team_name,team_1,team_2):
 	"""Function to keep checking who currently has control and will switch the line ups"""
+	lineup = ''
 	if team_name == team_1[0].getTeam():
 		lineup = offensiveLineup(team_1)
 	elif team_name == team_2[0].getTeam():
@@ -186,6 +194,6 @@ def offensiveLineup(team):
 
 def overTime():
 	"""If both teams have same score then game goes into overtime"""
-	print('overtime')
+	pass
 
 if __name__ == '__main__': main()
