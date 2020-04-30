@@ -30,11 +30,14 @@ class Player():
 	def getPosition(self):
 		return self.pos
 
-	def getFOWPer(self):
-		return self.FOWPer
-
 	def getFO(self):
 		return self.FO
+
+	def getThru(self):
+		return self.Thru
+
+	def getCF(self):
+		return self.CF
 
 	def setFO(self,new_FO):
 		self.FO = new_FO
@@ -60,12 +63,12 @@ def intro():
 def teams():
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
 	#Test Players
-	p1 = Player('Player 1', 'Arizona', 'C', 0.54, 1,1,1,1,1,1,1)
-	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 1,1,1,1,1,1,1)
-	p3 = Player('Player 3', 'Arizona', 'LW', 0.44, 1,1,1,1,1,1,1)
-	p4 = Player('Player 4', 'Utah', 'C', 0.49, 1,1,1,1,1,1,1)
-	p5 = Player('Player 5', 'Utah', 'RW', 0.40, 1,1,1,1,1,1,1)
-	p6 = Player('Player 7', 'Utah', 'LW', 0.41, 1,1,1,1,1,1,1)
+	p1 = Player('Player 1', 'Arizona', 'C', 0.54, 0.72,0.55,1,1,1,1,1)
+	p2 = Player('Player 2', 'Arizona', 'RW', 0.43, 0.62,0.56,1,1,1,1,1)
+	p3 = Player('Player 3', 'Arizona', 'LW', 0.44, 0.49,0.49,1,1,1,1,1)
+	p4 = Player('Player 4', 'Utah', 'C', 0.49, 0.659,0.51,1,1,1,1,1)
+	p5 = Player('Player 5', 'Utah', 'RW', 0.40, 0.33,0.48,1,1,1,1,1)
+	p6 = Player('Player 7', 'Utah', 'LW', 0.41, 0.8,0.47,1,1,1,1,1)
 
 	team_1 = [p1,p2,p3]
 	team_2 = [p4,p5,p6]
@@ -100,15 +103,16 @@ def simOneGame(team_1, team_2):
 	score_team_1 = score_team_2 = 0
 	Track_changes = False
 
-	starting_team = faceOff(team_1,team_2)
+	controlling_team = faceOff(team_1,team_2)
+	lineup = control(controlling_team,team_1,team_2)
 
 	while minutes < 60:
 
-		if starting_team == team_1[0].getTeam():
-			SL = offensiveLineup(team_1)
-
-		elif starting_team == team_2[0].getTeam():
-			SL = offensiveLineup(team_2)
+		for i in lineup:
+			if random.random() < i.getThru():
+				pass
+			else:
+				pass
 
 		minutes += 1
 
@@ -140,13 +144,22 @@ def faceOff(team_1, team_2):
 
 	return controlling_team
 
+def control(team_name,team_1,team_2):
+	"""Function to keep checking who currently has control and will switch the line ups"""
+	if team_name == team_1[0].getTeam():
+		lineup = offensiveLineup(team_1)
+	elif team_name == team_2[0].getTeam():
+		lineup = offensiveLineup(team_2)
+
+	return lineup
+
 def offensiveLineup(team):
 	"""randomly creates offensive lineup"""
-	lineup = []
-	lineup.append(random.choice([i for i in team if i.getPosition() == 'LW']))
-	lineup.append(random.choice([i for i in team if i.getPosition() == 'C']))
-	lineup.append(random.choice([i for i in team if i.getPosition() == 'RW']))
-	return lineup
+	SL = []
+	SL.append(random.choice([i for i in team if i.getPosition() == 'LW']))
+	SL.append(random.choice([i for i in team if i.getPosition() == 'C']))
+	SL.append(random.choice([i for i in team if i.getPosition() == 'RW']))
+	return SL
 
 def overTime():
 	"""If both teams have same score then game goes into overtime"""
