@@ -50,33 +50,27 @@ class Player():
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
 		
-#main function to run all sub functions
 def main():
 	"""Where all functions will run to simulate the game"""
 	intro()
-	N = getInputs()
 	team_1, team_2 = teams()
-	wins_1, wins_2, no_wins = simNGames(N,team_1,team_2)
-	gameSummary(wins_1,wins_2, no_wins)
+	team, incr = getInputs(team_1,team_2)
+	RegWins, SPWins, FOWins, CFWins = iterGames(team_1, team_2, incr, team)
+	Summary(RegWins, SPWins, FOWins, CFWins, team, team_1, team_2)
 
 def intro():
 	"""Prints a nice introduction header"""
-	print(100*'=')
-	a = 'Welcome to the Hockey Simulator! This Simulator uses the current seasons stats to determine the outcome of a game. Teams are preset based on data imported into excel sheet.'
+	print(150*'=')
+	a = 'This program allows you to see how much of an impact CF, FO and SP percentage have on the impact of a game for 10 iterations.'
 	print(a)
-	print(100*'=')
+	print(150*'=')
 
 def teams():
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
 	PlayerList = []
 	for i in range(len(stats)):
 		PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
-								stats.iloc[i]['FO'], stats.iloc[i]['SP'], stats.iloc[i]['CF'], 
-<<<<<<< HEAD
-								, stats.iloc[i]['GP']))
-=======
-								stats.iloc[i]['GP']))
->>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
+								stats.iloc[i]['FO'], stats.iloc[i]['SP'], stats.iloc[i]['CF'],stats.iloc[i]['GP']))
 	team_1 = []
 	team_2 = []
 
@@ -87,21 +81,47 @@ def teams():
 		else:
 			team_2.append(i)
 
-	#adjusting stats for testing
-	team_1_mod, team_2_mod = adjustment(team_1,team_2)
+	return team_1, team_2
 
-	return team_1_mod, team_2_mod
+def getInputs(team_1,team_2):
+	"""getting user inputs"""
+	print('\nCurrent teams loaded in for this simulation')
+	print('Team 1 is the {0}\nTeam 2 is the {1}'.format(team_1[0].getTeam(),team_2[0].getTeam()))
+	print('CF% (How much they control the puck)')
+	print('SP% (How often the score)')
+	print('FO% (How often they win face offs)')
+	team = input('Which team stats would you like to change (please enter T1 or T2): ')
+	incr = float(input('How much would you like to increment these stats by (0.01-0.1): '))
 
-def getInputs():
-	"""Only used for getting number of games if user wants to simulate more"""
-	N = int(input('How many games would you like to simulate: '))
-	return N
+	return team, incr
 
-def simNGames(N,team_1,team_2):
+def iterGames(team_1, team_2, incr, team):
+	count = 10
+	N = 100
+	current_val = 0
+	rounds = 0
+	RegWins = []
+	SPWins = []
+	FOWins = []
+	CFWins = []
+
+	while rounds < count:
+		RegWins.append(simNGames(100,team_1,team_2,team,current_val, 'REG'))
+		SPWins.append(simNGames(100,team_1,team_2,team,current_val, 'SP'))
+		FOWins.append(simNGames(100,team_1,team_2,team,current_val, 'FO'))
+		CFWins.append(simNGames(100,team_1,team_2,team,current_val, 'CF'))
+
+		current_val += incr
+		rounds += 1
+
+	return RegWins, SPWins, FOWins, CFWins
+
+def simNGames(N,team_1,team_2, team, current_val, stat):
 	"""Simulates number of inputted games and keeps track of stats of each game"""
 	wins_team_1 = 0
 	wins_team_2 = 0
-	no_winner = 0
+
+	team_1, team_2 = statChange(team_1,team_2,current_val,team,stat)
 
 	for i in range(N):
 		score_1, score_2, winner = simOneGame(team_1,team_2)
@@ -110,10 +130,39 @@ def simNGames(N,team_1,team_2):
 			wins_team_1 += 1
 		elif winner == team_2[0].getTeam():
 			wins_team_2 += 1
-		else:
-			no_winner += 1
 
-	return wins_team_1, wins_team_2, no_winner
+	if team == 'T1':
+		return wins_team_1
+	elif team =='T2':
+		return wins_team_2
+
+def statChange(team_1,team_2, incr, team,stat):
+	if team == 'T1':
+		if stat == 'REG':
+			pass
+		elif stat == 'SP':
+			for i in team_1:
+				i.setSP(i.getSP() + incr)
+		elif stat == 'FO':
+			for i in team_1:
+				i.setFO(i.getFO() + incr)
+		elif stat == 'CF':
+			for i in team_1:
+				i.setCF(i.getCF() + incr)
+	elif team == 'T2':
+		if stat == 'REG':
+			pass
+		elif stat == 'SP':
+			for i in team_2:
+				i.setSP(i.getSP() + incr)
+		elif stat == 'FO':
+			for i in team_2:
+				i.setFO(i.getFO() + incr)
+		elif stat == 'CF':
+			for i in team_2:
+				i.setCF(i.getCF() + incr)
+
+	return team_1, team_2
 
 def simOneGame(team_1, team_2):
 	"""Main function that game is run under, all game logic is here."""
@@ -129,21 +178,9 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
-<<<<<<< HEAD
 			# print(i.getTeam())
 			# print(i.getSP())
 			# print(i.getFO())
-=======
-<<<<<<< HEAD
-			print(i.getTeam())
-			print(i.getSP())
-			print(i.getFO())
-=======
-		# 	print(i.getTeam())
-		# 	print(i.getThru())
-		# 	print(i.getFO())
->>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
->>>>>>> 7d4f338df37ed32b3a185815635ac9a461edb056
 
 			if random.random() < i.getSP(): #Seeing if player scores
 				#print('someone scored', minutes)
@@ -186,54 +223,6 @@ def simOneGame(team_1, team_2):
 		winner = team_2[0].getTeam()
 
 	return  score_team_1, score_team_2, winner
-
-<<<<<<< HEAD
-def Summary(B_RegWins, B_SPWins, B_FOWins, C_RegWins, C_SPWins, C_FOWins):
-=======
-def gameSummary(stat1, stat2, stat3):
->>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
-	"""Output results"""
-	print('Team 1 won {0} games'.format(stat1))
-	print('Team 2 won {0} games'.format(stat2))
-	print('No winner games {}'.format(stat3))
-
-	x = np.linspace(0,10,10)
-
-	B_reg = [1]*10 #reg data
-	B_SP = [1, 3, 5, 9, 13, 19, 27, 35, 43, 57] #increased SP, will be like [stats1[i]] or something
-	B_FO = [1, 2, 6, 12, 14, 18, 24, 29, 33, 39] #increased FO, will be like [stats2[i]] or something
-
-	C_reg = [1]*10 #reg data
-	C_SP = [1, 3, 5, 9, 13, 19, 27, 35, 43, 57] #increased SP, will be like [stats1[i]] or something
-	C_FO = [1, 2, 6, 12, 14, 18, 24, 29, 33, 39] #increased FO, will be like [stats2[i]] or something
-
-	plt.figure(figsize=(20,20))
-
-	plt.subplot(211)
-	plt.grid(True)
-	plt.xticks(np.arange(0, 11, 1))
-	plt.axhline(0, color='black', lw=1)
-	plt.axvline(0, color='black', lw=1)
-	plt.plot(x, B_reg, '-Db', label = 'Regular Stats')
-	plt.plot(x, B_SP, '-Dr', label = 'Increased SP Stats')
-	plt.plot(x, B_FO, '-Dk', label = 'Increased FO Stats')
-	plt.xlabel('Number of Increments')
-	plt.ylabel('Number of Wins out of 100 Games')
-	plt.title('Bruins Data for Increasing SP and FO')
-	plt.legend()
-
-	plt.subplot(212)
-	plt.grid(True)
-	plt.xticks(np.arange(0, 11, 1))
-	plt.axhline(0, color='black', lw=1)
-	plt.axvline(0, color='black', lw=1)
-	plt.plot(x, C_reg, '-Db', label = 'Regular Stats')
-	plt.plot(x, C_SP, '-Dr', label = 'Increased SP Stats')
-	plt.plot(x, C_FO, '-Dk', label = 'Increased FO Stats')
-	plt.xlabel('Number of Increments')
-	plt.ylabel('Number of Wins out of 100 Games')
-	plt.title('Blackhawks Data for Increasing SP and FO')
-	plt.legend()
 
 def faceOff(team_1, team_2):
 	"""Faceoff condtion"""
@@ -300,34 +289,30 @@ def overTime(team_1,team_2):
 
 		minutes += 1
 
-	if winner == '':
-		winner = 'No winner'
-		return winner
+def Summary(RegWins, SPWins, FOWins, CFWins,team,team_1,team_2):
+	"""Output results"""
+	team_stat = []
 
-def adjustment(team_1,team_2):
-	"""Function to adjust certain teams stats"""
-	print('\nCurrent teams loaded in for this simulation')
-	print('Team 1 is the {0}\nTeam 2 is the {1}'.format(team_1[0].getTeam(),team_2[0].getTeam()))
-	team = input('Which team stats would you like to change (please enter T1 or T2. If no change is wanted type skip): ')
+	if team == 'T1':
+		team_stat = team_1
+	elif team == 'T2':
+		team_stat = team_2
 
-	if team == 'skip':
-		pass
-	else:
-		CF_change = float(input('How much would you like to adjust each players CF% (How much they control the puck): '))
-		SP_change = float(input('How much would you like to adjust each players SP% (How often the score): '))
-		FO_change = float(input('How much would you like to adjust each players FO% (How often they win face offs): '))
+	x = np.linspace(0,10,10)
 
-		if team == 'T1':
-			for i in team_1:
-				i.setCF(i.getCF() + CF_change)
-				i.setSP(i.getSP() + SP_change)
-				i.setFO(i.getFO() + FO_change)
-		elif team == 'T2':
-			for i in team_2:
-				i.setCF(i.getCF() + CF_change)
-				i.setSP(i.getSP() + SP_change)
-				i.setFO(i.getFO() + FO_change)
-
-	return team_1,team_2
+	plt.figure(figsize=(20,20))
+	plt.grid(True)
+	plt.xticks(np.arange(0, 11, 1))
+	plt.axhline(0, color='black', lw=1)
+	plt.axvline(0, color='black', lw=1)
+	plt.plot(x, RegWins, '-Db', label = 'Regular Stats')
+	plt.plot(x, SPWins, '-Dr', label = 'Increased SP Stats')
+	plt.plot(x, FOWins, '-Dk', label = 'Increased FO Stats')
+	plt.plot(x, CFWins, '-Dg', label = 'Increased CF Stats')
+	plt.xlabel('Number of Increments')
+	plt.ylabel('Number of Wins out of 100 Games')
+	plt.title('{0} Data for Increasing SP and FO'.format(team_stat[0].getTeam()))
+	plt.legend()
+	plt.show()
 
 if __name__ == '__main__': main()
