@@ -44,19 +44,16 @@ class Player():
 	def setSP(self,new_SP):
 		self.SP = new_SP
 
-	def setCF(self,new_CF):
-		self.CF =new_CF
-
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
-		
+    
 #main function to run all sub functions
 def main():
 	"""Where all functions will run to simulate the game"""
 	intro()
 	N = getInputs()
-	wins_1, wins_2, no_wins = simNGames(N)
-	gameSummary(wins_1,wins_2, no_wins)
+	wins_1, wins_2 = simNGames(N)
+	gameSummary(wins_1,wins_2)
 
 def intro():
 	"""Prints a nice introduction header"""
@@ -72,11 +69,7 @@ def teams():
 	for i in range(len(stats)):
 		PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
 								stats.iloc[i]['FO'], stats.iloc[i]['SP'], stats.iloc[i]['CF'], 
-<<<<<<< HEAD
 								, stats.iloc[i]['GP']))
-=======
-								stats.iloc[i]['GP']))
->>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
 	team_1 = []
 	team_2 = []
 
@@ -86,10 +79,10 @@ def teams():
 		else:
 			team_2.append(i)
 
-	#adjusting stats for testing
-	for i in team_1:
-		i.setFO(i.getFO()+0.15)
-		i.setSP(i.getSP()+0.15)
+	# #adjusting stats for testing
+	# for i in team_1:
+	# 	i.setFO(i.getFO()+0.6)
+	# 	i.setThru(i.getThru()+0.6)
 
 	return team_1, team_2
 
@@ -103,7 +96,6 @@ def simNGames(N):
 	team_1, team_2 = teams()
 	wins_team_1 = 0
 	wins_team_2 = 0
-	no_winner = 0
 
 	for i in range(N):
 		score_1, score_2, winner = simOneGame(team_1,team_2)
@@ -112,10 +104,8 @@ def simNGames(N):
 			wins_team_1 += 1
 		elif winner == team_2[0].getTeam():
 			wins_team_2 += 1
-		else:
-			no_winner += 1
 
-	return wins_team_1, wins_team_2, no_winner
+	return wins_team_1, wins_team_2
 
 def simOneGame(team_1, team_2):
 	"""Main function that game is run under, all game logic is here."""
@@ -131,54 +121,48 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
-<<<<<<< HEAD
 			print(i.getTeam())
 			print(i.getSP())
 			print(i.getFO())
-=======
-		# 	print(i.getTeam())
-		# 	print(i.getThru())
-		# 	print(i.getFO())
->>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
 
 			if random.random() < i.getSP(): #Seeing if player scores
 				# print('someone scored', minutes)
 				if i.getTeam() == team_1[0].getTeam():
-					#print('player scored', i.getTeam())
+					print('player scored', i.getTeam())
 					score_team_1 += 1
 					controlling_team = faceOff(team_1,team_2)
 					# print('team 1 scored', minutes)
-					#print('')
+					print('')
 					break
 
 				elif i.getTeam() == team_2[0].getTeam():
-					# print('player scored', i.getTeam())
+					print('player scored', i.getTeam())
 					score_team_2 += 1
 					controlling_team = faceOff(team_1,team_2)
 					# print('team 2 scored', minutes)
-					# print('')
+					print('')
 					break
 	
 			elif random.random() < i.getCF(): #To see if puck get stolen
 				# print('someone missed', minutes)
 				if i.getTeam() == team_1[0].getTeam():
-					# print('had it stolen', i.getTeam())
+					print('had it stolen', i.getTeam())
 					controlling_team = team_2[0].getTeam()
 					break
 
 				elif i.getTeam() == team_2[0].getTeam():
-					# print('had it stolen', i.getTeam())
+					print('had it stolen', i.getTeam())
 					controlling_team = team_1[0].getTeam()
 					break
 
-			# print('no one scored or got it stolen')
-			# print('')
+			print('no one scored or got it stolen')
+			print('')
 
 		minutes += 1
 
 	#check if scores are equal and if they are go into overtime
 	if score_team_1 == score_team_2:
-		winner = overTime(team_1,team_2)
+		overTime()
 	elif score_team_1 > score_team_2:
 		winner = team_1[0].getTeam()
 	elif score_team_2 > score_team_1:
@@ -186,15 +170,10 @@ def simOneGame(team_1, team_2):
 
 	return  score_team_1, score_team_2, winner
 
-<<<<<<< HEAD
 def Summary(B_RegWins, B_SPWins, B_FOWins, C_RegWins, C_SPWins, C_FOWins):
-=======
-def gameSummary(stat1, stat2, stat3):
->>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
 	"""Output results"""
 	print('Team 1 won {0} games'.format(stat1))
 	print('Team 2 won {0} games'.format(stat2))
-	print('No winner games {}'.format(stat3))
 
 	x = np.linspace(0,10,10)
 
@@ -265,42 +244,8 @@ def offensiveLineup(team):
 	SL.append(random.choice([i for i in team if i.getPosition() == 'RW']))
 	return SL
 
-def overTime(team_1,team_2):
-	"""If both teams have same score then game goes into overtime, basically same as normal game """
-	minutes = 0
-	winner = ''
-
-	controlling_team = faceOff(team_1,team_2)
-
-	while minutes < 5:
-
-		lineup = control(controlling_team,team_1,team_2)
-
-		for i in lineup:
-
-			if random.random() < i.getSP(): #Seeing if player scores
-				if i.getTeam() == team_1[0].getTeam():
-					winner = i.getTeam()
-					return winner
-
-				elif i.getTeam() == team_2[0].getTeam():
-					winner = i.getTeam()
-					return winner
-	
-			elif random.random() < i.getCF(): #To see if puck get stolen
-				# print('someone missed', minutes)
-				if i.getTeam() == team_1[0].getTeam():
-					controlling_team = team_2[0].getTeam()
-					break
-
-				elif i.getTeam() == team_2[0].getTeam():
-					controlling_team = team_1[0].getTeam()
-					break
-
-		minutes += 1
-
-	if winner == '':
-		winner = 'No winner'
-		return winner
+def overTime():
+	"""If both teams have same score then game goes into overtime"""
+	pass
 
 if __name__ == '__main__': main()
