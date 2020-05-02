@@ -133,7 +133,7 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
-
+			print(i.getTeam())
 			print(i.getThru())
 			print(i.getFO())
 
@@ -161,10 +161,12 @@ def simOneGame(team_1, team_2):
 					print('had it stolen', i.getTeam())
 					controlling_team = team_2[0].getTeam()
 					break
+
 				elif i.getTeam() == team_2[0].getTeam():
 					print('had it stolen', i.getTeam())
 					controlling_team = team_1[0].getTeam()
 					break
+
 			print('no one scored or got it stolen')
 			print('')
 
