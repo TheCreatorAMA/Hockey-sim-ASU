@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import random
+import matplotlib.pyplot as plt
 
 stats = pd.read_csv('All_data.csv')
 
@@ -71,7 +72,11 @@ def teams():
 	for i in range(len(stats)):
 		PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
 								stats.iloc[i]['FO'], stats.iloc[i]['SP'], stats.iloc[i]['CF'], 
+<<<<<<< HEAD
+								, stats.iloc[i]['GP']))
+=======
 								stats.iloc[i]['GP']))
+>>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
 	team_1 = []
 	team_2 = []
 
@@ -124,9 +129,21 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
+<<<<<<< HEAD
 			# print(i.getTeam())
 			# print(i.getSP())
 			# print(i.getFO())
+=======
+<<<<<<< HEAD
+			print(i.getTeam())
+			print(i.getSP())
+			print(i.getFO())
+=======
+		# 	print(i.getTeam())
+		# 	print(i.getThru())
+		# 	print(i.getFO())
+>>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
+>>>>>>> 7d4f338df37ed32b3a185815635ac9a461edb056
 
 			if random.random() < i.getSP(): #Seeing if player scores
 				#print('someone scored', minutes)
@@ -170,11 +187,53 @@ def simOneGame(team_1, team_2):
 
 	return  score_team_1, score_team_2, winner
 
+<<<<<<< HEAD
+def Summary(B_RegWins, B_SPWins, B_FOWins, C_RegWins, C_SPWins, C_FOWins):
+=======
 def gameSummary(stat1, stat2, stat3):
+>>>>>>> a55052329f12136864c6648cf8521bd21db6d0c4
 	"""Output results"""
 	print('Team 1 won {0} games'.format(stat1))
 	print('Team 2 won {0} games'.format(stat2))
 	print('No winner games {}'.format(stat3))
+
+	x = np.linspace(0,10,10)
+
+	B_reg = [1]*10 #reg data
+	B_SP = [1, 3, 5, 9, 13, 19, 27, 35, 43, 57] #increased SP, will be like [stats1[i]] or something
+	B_FO = [1, 2, 6, 12, 14, 18, 24, 29, 33, 39] #increased FO, will be like [stats2[i]] or something
+
+	C_reg = [1]*10 #reg data
+	C_SP = [1, 3, 5, 9, 13, 19, 27, 35, 43, 57] #increased SP, will be like [stats1[i]] or something
+	C_FO = [1, 2, 6, 12, 14, 18, 24, 29, 33, 39] #increased FO, will be like [stats2[i]] or something
+
+	plt.figure(figsize=(20,20))
+
+	plt.subplot(211)
+	plt.grid(True)
+	plt.xticks(np.arange(0, 11, 1))
+	plt.axhline(0, color='black', lw=1)
+	plt.axvline(0, color='black', lw=1)
+	plt.plot(x, B_reg, '-Db', label = 'Regular Stats')
+	plt.plot(x, B_SP, '-Dr', label = 'Increased SP Stats')
+	plt.plot(x, B_FO, '-Dk', label = 'Increased FO Stats')
+	plt.xlabel('Number of Increments')
+	plt.ylabel('Number of Wins out of 100 Games')
+	plt.title('Bruins Data for Increasing SP and FO')
+	plt.legend()
+
+	plt.subplot(212)
+	plt.grid(True)
+	plt.xticks(np.arange(0, 11, 1))
+	plt.axhline(0, color='black', lw=1)
+	plt.axvline(0, color='black', lw=1)
+	plt.plot(x, C_reg, '-Db', label = 'Regular Stats')
+	plt.plot(x, C_SP, '-Dr', label = 'Increased SP Stats')
+	plt.plot(x, C_FO, '-Dk', label = 'Increased FO Stats')
+	plt.xlabel('Number of Increments')
+	plt.ylabel('Number of Wins out of 100 Games')
+	plt.title('Blackhawks Data for Increasing SP and FO')
+	plt.legend()
 
 def faceOff(team_1, team_2):
 	"""Faceoff condtion"""
