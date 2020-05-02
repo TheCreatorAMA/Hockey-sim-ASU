@@ -43,9 +43,12 @@ class Player():
 	def setSP(self,new_SP):
 		self.SP = new_SP
 
+	def setCF(self,new_CF):
+		self.CF =new_CF
+
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
-    
+		
 #main function to run all sub functions
 def main():
 	"""Where all functions will run to simulate the game"""
@@ -67,9 +70,8 @@ def teams():
 	PlayerList = []
 	for i in range(len(stats)):
 		PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
-								stats.iloc[i]['FO'], stats.iloc[i]['Thru'], stats.iloc[i]['CF'], 
-								stats.iloc[i]['Penalties'], stats.iloc[i]['Minor'], stats.iloc[i]['GP'], 
-								stats.iloc[i]['PPG']))
+								stats.iloc[i]['FO'], stats.iloc[i]['SP'], stats.iloc[i]['CF'], 
+								stats.iloc[i]['GP']))
 	team_1 = []
 	team_2 = []
 
@@ -82,7 +84,7 @@ def teams():
 	#adjusting stats for testing
 	for i in team_1:
 		i.setFO(i.getFO()+0.15)
-		i.setThru(i.getThru()+0.15)
+		i.setSP(i.getSP()+0.15)
 
 	return team_1, team_2
 
@@ -128,7 +130,7 @@ def simOneGame(team_1, team_2):
 		# 	print(i.getThru())
 		# 	print(i.getFO())
 
-			if random.random() < i.getThru(): #Seeing if player scores
+			if random.random() < i.getSP(): #Seeing if player scores
 				# print('someone scored', minutes)
 				if i.getTeam() == team_1[0].getTeam():
 					#print('player scored', i.getTeam())
@@ -223,7 +225,7 @@ def overTime(team_1,team_2):
 
 		for i in lineup:
 
-			if random.random() < i.getThru(): #Seeing if player scores
+			if random.random() < i.getSP(): #Seeing if player scores
 				if i.getTeam() == team_1[0].getTeam():
 					winner = i.getTeam()
 					return winner
