@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import random
 import matplotlib.pyplot as plt
+import copy
 
 stats = pd.read_csv('All_data.csv')
 
@@ -51,7 +52,7 @@ class Player():
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
 		
 def main():
-	"""Where all functions will run to simulate the game"""
+	"""Where the magic happens"""
 	intro()
 	team_1, team_2 = teams()
 	team, incr = getInputs(team_1,team_2)
@@ -96,6 +97,7 @@ def getInputs(team_1,team_2):
 	return team, incr
 
 def iterGames(team_1, team_2, incr, team):
+	"""Function to run 100 games 10 times. This will output number of wins for a given time for each stat adjustment"""
 	count = 10
 	N = 100
 	current_val = 0
@@ -105,11 +107,21 @@ def iterGames(team_1, team_2, incr, team):
 	FOWins = []
 	CFWins = []
 
+	#using deep copy to actually create a completely new list of objects and not effecting old list
+	team_1_REG = copy.deepcopy(team_1)
+	team_2_REG = copy.deepcopy(team_2)
+	team_1_SP = copy.deepcopy(team_1)
+	team_2_SP = copy.deepcopy(team_2)
+	team_1_FO = copy.deepcopy(team_1)
+	team_2_FO = copy.deepcopy(team_2)
+	team_1_CF = copy.deepcopy(team_1)
+	team_2_CF = copy.deepcopy(team_2)
+
 	while rounds < count:
-		RegWins.append(simNGames(100,team_1,team_2,team,current_val, 'REG'))
-		SPWins.append(simNGames(100,team_1,team_2,team,current_val, 'SP'))
-		FOWins.append(simNGames(100,team_1,team_2,team,current_val, 'FO'))
-		CFWins.append(simNGames(100,team_1,team_2,team,current_val, 'CF'))
+		RegWins.append(simNGames(100,team_1_REG,team_2_REG,team,current_val, 'REG'))
+		SPWins.append(simNGames(100,team_1_SP,team_2_SP,team,current_val, 'SP'))
+		FOWins.append(simNGames(100,team_1_FO,team_2_FO,team,current_val, 'FO'))
+		CFWins.append(simNGames(100,team_1_CF,team_2_CF,team,current_val, 'CF'))
 
 		current_val += incr
 		rounds += 1
@@ -121,10 +133,10 @@ def simNGames(N,team_1,team_2, team, current_val, stat):
 	wins_team_1 = 0
 	wins_team_2 = 0
 
-	team_1, team_2 = statChange(team_1,team_2,current_val,team,stat)
+	team_1_adj, team_2_adj = statChange(team_1,team_2,current_val,team,stat)
 
 	for i in range(N):
-		score_1, score_2, winner = simOneGame(team_1,team_2)
+		winner = simOneGame(team_1_adj,team_2_adj)
 
 		if winner == team_1[0].getTeam():
 			wins_team_1 += 1
@@ -136,8 +148,10 @@ def simNGames(N,team_1,team_2, team, current_val, stat):
 	elif team =='T2':
 		return wins_team_2
 
-def statChange(team_1,team_2, incr, team,stat):
+def statChange(team_1,team_2, incr, team, stat):
+	"""Function to adjust stats by a given increment"""
 	if team == 'T1':
+
 		if stat == 'REG':
 			pass
 		elif stat == 'SP':
@@ -149,7 +163,9 @@ def statChange(team_1,team_2, incr, team,stat):
 		elif stat == 'CF':
 			for i in team_1:
 				i.setCF(i.getCF() + incr)
+
 	elif team == 'T2':
+
 		if stat == 'REG':
 			pass
 		elif stat == 'SP':
@@ -169,7 +185,6 @@ def simOneGame(team_1, team_2):
 	minutes = 0
 	winner = ''
 	score_team_1 = score_team_2 = 0
-	Track_changes = False
 
 	controlling_team = faceOff(team_1,team_2)
 
@@ -178,37 +193,25 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
-			# print(i.getTeam())
-			# print(i.getSP())
-			# print(i.getFO())
 
 			if random.random() < i.getSP(): #Seeing if player scores
-				#print('someone scored', minutes)
+
 				if i.getTeam() == team_1[0].getTeam():
-					#print('player scored', i.getTeam())
 					score_team_1 += 1
 					controlling_team = faceOff(team_1,team_2)
-					#print('team 1 scored', minutes)
-					#print('')
 					break
 
 				elif i.getTeam() == team_2[0].getTeam():
-					#print('player scored', i.getTeam())
 					score_team_2 += 1
 					controlling_team = faceOff(team_1,team_2)
-					#print('team 2 scored', minutes)
-					#print('')
 					break
 	
-			elif random.random() < i.getCF(): #To see if puck get stolen
-				#print('someone missed', minutes)
+			elif random.random() > i.getCF(): #To see if puck get stolen
 				if i.getTeam() == team_1[0].getTeam():
-					#print('had it stolen', i.getTeam())
 					controlling_team = team_2[0].getTeam()
 					break
 
 				elif i.getTeam() == team_2[0].getTeam():
-					#print('had it stolen', i.getTeam())
 					controlling_team = team_1[0].getTeam()
 					break
 
@@ -222,7 +225,7 @@ def simOneGame(team_1, team_2):
 	elif score_team_2 > score_team_1:
 		winner = team_2[0].getTeam()
 
-	return  score_team_1, score_team_2, winner
+	return  winner
 
 def faceOff(team_1, team_2):
 	"""Faceoff condtion"""
@@ -248,7 +251,7 @@ def control(team_name,team_1,team_2):
 	return lineup
 
 def offensiveLineup(team):
-	"""randomly creates offensive lineup"""
+	"""Creates offensive lineup by randomly selecting a LW, C and RW from each team"""
 	SL = []
 	SL.append(random.choice([i for i in team if i.getPosition() == 'LW']))
 	SL.append(random.choice([i for i in team if i.getPosition() == 'C']))
@@ -256,7 +259,7 @@ def offensiveLineup(team):
 	return SL
 
 def overTime(team_1,team_2):
-	"""If both teams have same score then game goes into overtime, basically same as normal game """
+	"""If both teams have same score then game goes into overtime, basically same as normal game but with a 5 minute period"""
 	minutes = 0
 	winner = ''
 
