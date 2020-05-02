@@ -54,7 +54,8 @@ def main():
 	"""Where all functions will run to simulate the game"""
 	intro()
 	N = getInputs()
-	wins_1, wins_2, no_wins = simNGames(N)
+	team_1, team_2 = teams()
+	wins_1, wins_2, no_wins = simNGames(N,team_1,team_2)
 	gameSummary(wins_1,wins_2, no_wins)
 
 def intro():
@@ -66,7 +67,6 @@ def intro():
 
 def teams():
 	"""Where player objects are created and their stats are imported. Players are then sorted into teams"""
-	#Actual Players
 	PlayerList = []
 	for i in range(len(stats)):
 		PlayerList.append(Player(stats.iloc[i]['Player'], stats.iloc[i]['Team'], stats.iloc[i]['Pos'],
@@ -75,6 +75,7 @@ def teams():
 	team_1 = []
 	team_2 = []
 
+	#sorting teams
 	for i in PlayerList:
 		if i.getTeam() == PlayerList[0].getTeam():
 			team_1.append(i)
@@ -82,20 +83,17 @@ def teams():
 			team_2.append(i)
 
 	#adjusting stats for testing
-	for i in team_1:
-		i.setFO(i.getFO()+0.15)
-		i.setSP(i.getSP()+0.15)
+	team_1_mod, team_2_mod = adjustment(team_1,team_2)
 
-	return team_1, team_2
+	return team_1_mod, team_2_mod
 
 def getInputs():
 	"""Only used for getting number of games if user wants to simulate more"""
 	N = int(input('How many games would you like to simulate: '))
 	return N
 
-def simNGames(N):
+def simNGames(N,team_1,team_2):
 	"""Simulates number of inputted games and keeps track of stats of each game"""
-	team_1, team_2 = teams()
 	wins_team_1 = 0
 	wins_team_2 = 0
 	no_winner = 0
@@ -126,42 +124,39 @@ def simOneGame(team_1, team_2):
 		lineup = control(controlling_team,team_1,team_2)
 
 		for i in lineup:
-		# 	print(i.getTeam())
-		# 	print(i.getThru())
-		# 	print(i.getFO())
+			# print(i.getTeam())
+			# print(i.getSP())
+			# print(i.getFO())
 
 			if random.random() < i.getSP(): #Seeing if player scores
-				# print('someone scored', minutes)
+				#print('someone scored', minutes)
 				if i.getTeam() == team_1[0].getTeam():
 					#print('player scored', i.getTeam())
 					score_team_1 += 1
 					controlling_team = faceOff(team_1,team_2)
-					# print('team 1 scored', minutes)
+					#print('team 1 scored', minutes)
 					#print('')
 					break
 
 				elif i.getTeam() == team_2[0].getTeam():
-					# print('player scored', i.getTeam())
+					#print('player scored', i.getTeam())
 					score_team_2 += 1
 					controlling_team = faceOff(team_1,team_2)
-					# print('team 2 scored', minutes)
-					# print('')
+					#print('team 2 scored', minutes)
+					#print('')
 					break
 	
 			elif random.random() < i.getCF(): #To see if puck get stolen
-				# print('someone missed', minutes)
+				#print('someone missed', minutes)
 				if i.getTeam() == team_1[0].getTeam():
-					# print('had it stolen', i.getTeam())
+					#print('had it stolen', i.getTeam())
 					controlling_team = team_2[0].getTeam()
 					break
 
 				elif i.getTeam() == team_2[0].getTeam():
-					# print('had it stolen', i.getTeam())
+					#print('had it stolen', i.getTeam())
 					controlling_team = team_1[0].getTeam()
 					break
-
-			# print('no one scored or got it stolen')
-			# print('')
 
 		minutes += 1
 
@@ -249,5 +244,31 @@ def overTime(team_1,team_2):
 	if winner == '':
 		winner = 'No winner'
 		return winner
+
+def adjustment(team_1,team_2):
+	"""Function to adjust certain teams stats"""
+	print('\nCurrent teams loaded in for this simulation')
+	print('Team 1 is the {0}\nTeam 2 is the {1}'.format(team_1[0].getTeam(),team_2[0].getTeam()))
+	team = input('Which team stats would you like to change (please enter T1 or T2. If no change is wanted type skip): ')
+
+	if team == 'skip':
+		pass
+	else:
+		CF_change = float(input('How much would you like to adjust each players CF% (How much they control the puck): '))
+		SP_change = float(input('How much would you like to adjust each players SP% (How often the score): '))
+		FO_change = float(input('How much would you like to adjust each players FO% (How often they win face offs): '))
+
+		if team == 'T1':
+			for i in team_1:
+				i.setCF(i.getCF() + CF_change)
+				i.setSP(i.getSP() + SP_change)
+				i.setFO(i.getFO() + FO_change)
+		elif team == 'T2':
+			for i in team_2:
+				i.setCF(i.getCF() + CF_change)
+				i.setSP(i.getSP() + SP_change)
+				i.setFO(i.getFO() + FO_change)
+
+	return team_1,team_2
 
 if __name__ == '__main__': main()
