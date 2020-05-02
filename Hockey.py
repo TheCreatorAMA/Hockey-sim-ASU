@@ -314,7 +314,7 @@ def Summary(RegWins, SPWins, FOWins, CFWins,team,team_1,team_2):
 	plt.plot(x, CFWins, '-Dg', label = 'Increased CF Stats')
 	plt.xlabel('Number of Increments')
 	plt.ylabel('Number of Wins out of 100 Games')
-	plt.title('{0} Data for Increasing SP and FO'.format(team_stat[0].getTeam()))
+	plt.title('{0} Data for Increasing SP, FO and CF'.format(team_stat[0].getTeam()))
 	plt.legend()
 	plt.show()
 
