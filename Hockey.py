@@ -7,17 +7,14 @@ stats = pd.read_csv('All_data.csv')
 #Hockey player class
 class Player():
 	"""This class defines a movie with the players team, position and some other stats"""
-	def __init__(self, Name, Team, Pos, FO, Thru, CF, Penalties, Minor, GP, PPG):
+	def __init__(self, Name, Team, Pos, FO, SP, CF, GP):
 		self.Name = Name
 		self.Team = Team
 		self.Pos = Pos
 		self.FO = FO
-		self.Thru = Thru
+		self.SP = SP
 		self.CF = CF
-		self.Penalties = Penalties
-		self.Minor = Minor
 		self.GP = GP
-		self.PPG = PPG
 
 	def getName(self):
 		return self.Name
@@ -31,29 +28,20 @@ class Player():
 	def getFO(self):
 		return self.FO
 
-	def getThru(self):
-		return self.Thru
+	def getSP(self):
+		return self.SP
 
 	def getCF(self):
 		return self.CF
 
-	def getPenalties(self):
-		return self.Penalties
-
-	def getMinor(self):
-		return self.Minor
-
 	def getGP(self):
 		return self.GP
-
-	def getPPG(self):
-		return self.PPG
 
 	def setFO(self,new_FO):
 		self.FO = new_FO
 
-	def setThru(self,new_Thru):
-		self.Thru = new_Thru
+	def setSP(self,new_SP):
+		self.SP = new_SP
 
 	def __str__(self):
 		return str(self.getName()) + ' plays for ' + str(self.getTeam())
